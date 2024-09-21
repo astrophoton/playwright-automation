@@ -1,0 +1,36 @@
+name: Auto Label PR
+
+on:
+  pull_request:
+    types: [opened, edited, sychronize]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR title and apply label
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prTitle = context.payload.pull_request.title.toLowerCase();
+            const labels = [];
+
+            if (prTitle.includes('chore')) {
+              labels.push('chore');
+            }
+            if (prTitle.includes('feature')) {
+              labels.push('feature');
+            }
+            if (prTitle.includes('bug')) {
+              labels.push('bug');
+            }
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labels,
+              });
+            }
