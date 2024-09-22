@@ -1,5 +1,7 @@
 import { chromium, type FullConfig } from "@playwright/test";
 import dotenv from "dotenv";
+import { LoginPage } from "./src/pages";
+
 dotenv.config();
 
 async function globalSetup(config: FullConfig) {
@@ -8,13 +10,12 @@ async function globalSetup(config: FullConfig) {
   const page = await browser.newPage();
 
   await page.goto(`${process.env.BASE_URL}`);
-  await page
-    .getByPlaceholder("Username")
-    .fill(process.env.LOGIN_USERNAME || "");
-  await page
-    .getByPlaceholder("Password")
-    .fill(process.env.LOGIN_PASSWORD || "");
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.waitForLoadState("load");
+
+  const loginPage = new LoginPage(page);
+  await loginPage.loginFlow();
+
+  await page.waitForLoadState("load");
 
   await page.context().storageState({ path: storageState as string });
   await browser.close();
