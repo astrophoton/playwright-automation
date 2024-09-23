@@ -1,11 +1,9 @@
-import { test, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "./baseTest";
 
-test.describe("Authenticated Actions", () => {
-  test("should access the dashboard page", async ({ page }) => {
-    // The browser should already be logged in due to the global setup
-    await page.goto("/web/index.php/admin/viewSystemUsers");
-
-    // Assert that the dashboard is loaded
+test.describe("Test page fixture routing ...", () => {
+  test("Navigate to Admin Page", async ({ page, adminPage }) => {
+    await adminPage.goToURL();
     await expect(page).toHaveURL("/web/index.php/admin/viewSystemUsers");
   });
 });
