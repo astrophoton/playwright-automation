@@ -9,12 +9,8 @@ async function globalSetup(config: FullConfig) {
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  await page.goto(`${process.env.BASE_URL}`);
-  await page.waitForLoadState("load");
-
   const loginPage = new LoginPage(page);
   await loginPage.loginFlow();
-
   await page.waitForLoadState("load");
 
   await page.context().storageState({ path: storageState as string });
