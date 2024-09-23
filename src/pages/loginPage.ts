@@ -1,17 +1,15 @@
 import { Page } from "@playwright/test";
+import { BasePage } from "./basePage";
 import dotenv from "dotenv";
+
 dotenv.config();
 
-export class LoginPage {
-  private page: Page;
+export class LoginPage extends BasePage {
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
 
-  protected url = `${process.env.BASE_URL}`;
-
   async loginFlow() {
-    await this.page.goto(this.url);
     await this.page
       .getByPlaceholder("Username")
       .fill(process.env.LOGIN_USERNAME || "");
