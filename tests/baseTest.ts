@@ -12,6 +12,8 @@ export const test = baseTest.extend<pageFixtures>({
   },
 
   adminPage: async ({ page }, use) => {
-    await use(new AdminPage(page));
+    const adminPage = new AdminPage(page);
+    await adminPage.goToURL();
+    await use(adminPage);
   },
 });

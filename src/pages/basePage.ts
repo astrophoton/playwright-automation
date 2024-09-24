@@ -8,6 +8,7 @@ export class BasePage {
   async goToURL() {
     await this.page.goto(this.url);
     await this.page.waitForLoadState("load");
+    await this.page.waitForTimeout(1000);
   }
 
   protected setURL(url: string) {
